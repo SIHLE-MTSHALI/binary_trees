@@ -2,25 +2,22 @@
 
 /**
  * binary_tree_is_ancestor - Checks if a node is an ancestor of another node
- * @node: Pointer to the potential ancestor node
- * @target: Pointer to the target node
+ * @ancestor: Pointer to the potential ancestor node
+ * @node: Pointer to the node to check
  *
- * Return: 1 if node is an ancestor of target, 0 otherwise
+ * Return: 1 if @ancestor is an ancestor of @node, 0 otherwise
  */
-int binary_tree_is_ancestor(const binary_tree_t *node,
-		const binary_tree_t *target)
+int binary_tree_is_ancestor(const binary_tree_t *ancestor,
+		const binary_tree_t *node)
 {
-	if (node == NULL || target == NULL)
+	if (ancestor == NULL || node == NULL)
 		return (0);
 
-	if (node == target)
+	if (ancestor == node)
 		return (1);
 
-	if (binary_tree_is_ancestor(node->left, target) ||
-	    binary_tree_is_ancestor(node->right, target))
-		return (1);
-
-	return (0);
+	return (binary_tree_is_ancestor(ancestor->left, node) ||
+			binary_tree_is_ancestor(ancestor->right, node));
 }
 
 /**
@@ -32,7 +29,7 @@ int binary_tree_is_ancestor(const binary_tree_t *node,
  *         If no common ancestor was found, return NULL
  */
 binary_tree_t *binary_trees_ancestor(const binary_tree_t *first,
-				     const binary_tree_t *second)
+		const binary_tree_t *second)
 {
 	binary_tree_t *ancestor;
 
@@ -45,7 +42,7 @@ binary_tree_t *binary_trees_ancestor(const binary_tree_t *first,
 	ancestor = (binary_tree_t *)first;
 	while (ancestor != NULL)
 	{
-		if (binary_tree_is_ancestor(second, ancestor))
+		if (binary_tree_is_ancestor(ancestor, second))
 			return (ancestor);
 		ancestor = ancestor->parent;
 	}
